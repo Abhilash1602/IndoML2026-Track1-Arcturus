@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+checkpoints/*
+!checkpoints/README.md
+data/
+work/
+*.pth
+*.pt
+*.pkl
+*.zip
+predictions*.jsonl

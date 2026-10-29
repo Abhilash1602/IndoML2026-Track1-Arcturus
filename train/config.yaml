@@ -1,0 +1,22 @@
+# Hyperparameters of the shipped Track 1 models. The training scripts read these values from
+# src/config.py and from the environment variables set in train/run_training.sh; this file documents them.
+audio:      {sample_rate: 16000, clip_sec: 10.0, hop: 160, n_fft: 1024, n_mels: 80, frames_per_clip: 1000}
+head:       {type: conformer, layers: 4, dim: 144, heads: 4, depthwise_kernel: 31}
+loss:
+  weights:  {bce: 1.0, dice: 0.5, boundary_mse: 0.2}
+  owbce:    {height: 4, half_width_frames: 10, note: "two Dasheng Stage-2 members: height 12, half-width 20; none for ATST fine-tunes"}
+augmentation:
+  synthetic_mixtures: {clips: 15000, events_per_clip: [1, 3], event_len_sec: [0.15, 6.0], snr_db: [0, 15], min_gap_sec: 0.2, fade_ms: 5}
+  mixup:    {alpha: 0.2, p: 0.5, labels: union}
+  atst_only: {filteraugment: {bands: [2, 5], db: 6}, specaugment: {freq_masks: 2, freq_width: 8, time_masks: 2, time_width: 20},
+              device_impulse_response: {p: 0.5}, freq_warp: {p: 0.5, range: [0.9, 1.1]}}
+phase_a_head:     {optimizer: adamw, schedule: one_cycle, peak_lr: 1.0e-3, weight_decay: 1.0e-4, backbone: frozen}
+phase_b_unfreeze: {backbone_lr: 1.0e-4, llrd_decay: 0.5, llrd_groups: 12, mean_teacher_ema: 0.999, ict_alpha: 0.2,
+                   consistency_rampup_epochs: 5, early_stopping_patience: 8}
+phase_c_validation_finetune: {epochs: 3, backbone_lr: 2.0e-5, head_lr: 1.0e-4,
+                              batch_shares: {gold: 0.49, synthetic: 0.15, val_natural: 0.21, val_synthetic: 0.15}}
+phase_d_self_training: {epochs: 3, pseudo_share_of_natural: 0.3, pseudo_clips: 79526}
+refiners:   {conv_width: 128, dilations: [1, 2, 4, 8], bigru: 128, losses: [bce, focal, iou], optimizer: adamw, lr: 1.0e-3, schedule: cosine,
+             training_data: official_validation, count: 5}
+detector:   {d_model: 256, encoder_layers: 3, decoder_layers: 3, queries: 10, anchors: true, matching: hungarian, l1: tolerance_scaled}
+verifier:   {fp_filter: {model: hist_gbm, iters: 300, lr: 0.05}, verifier: {model: hist_gbm, iters: 400, lr: 0.04, pca: 24}}

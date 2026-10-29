@@ -1,0 +1,16 @@
+# Inference (inference/infer.py). Python 3.12.2; PyTorch built for CUDA 13.0 (torch 2.13.0+cu130).
+# Install PyTorch first from the official index for your CUDA version, e.g.:
+#   pip install torch==2.13.0 torchaudio==2.11.0 --index-url https://download.pytorch.org/whl/cu130
+torch==2.13.0
+torchaudio==2.11.0
+numpy==2.5.2
+scipy==1.18.0
+scikit-learn==1.9.0
+soundfile==0.14.0
+tqdm==4.70.0
+transformers==5.17.0
+huggingface_hub==1.28.0
+safetensors==0.8.0
+speechbrain==1.1.1
+einops==0.8.2
+PyYAML==6.0.3

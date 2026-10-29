@@ -1,0 +1,7 @@
+# Training (train/run_training.sh). Everything needed for inference, plus data loading and logging.
+-r requirements_inference.txt
+datasets==5.0.1
+librosa==1.0.0
+pandas==2.3.3
+wandb==0.28.2          # training scripts log to Weights & Biases; set WANDB_MODE=disabled to run offline
+optuna==4.9.0          # decode-parameter tuning scripts

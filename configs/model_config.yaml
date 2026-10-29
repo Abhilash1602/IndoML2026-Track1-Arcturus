@@ -1,0 +1,17 @@
+# Final Track 1 system (Phase 2 test: Combined 1.5893, 8th place).
+# Read by inference/infer.py. Every clip goes through the same steps.
+ensemble:
+  member_prefix: VS            # self-trained students (owbceVS_*) + the 5 Stage-2 members, logit mean
+  long_clip_window_sec: 10.0
+  long_clip_overlap_sec: 5.0
+decode:
+  refiner_blend_weight: 0.7    # p = sigmoid(w * ensemble_logit + (1 - w) * logit(mean refiner presence))
+  viterbi_stay_background: 0.9802
+  viterbi_stay_event: 0.9489
+  edge_correction_table: checkpoints/edge_correction_v5.json
+event_decisions:
+  merge_min_refiner_votes: 3   # of 5
+  fp_filter_drop_threshold: 0.2
+  verifier_drop_threshold: 0.25
+  verifier_merge_threshold: 0.6
+  confidence_guard: 0.70       # events with mean probability >= guard are never dropped
